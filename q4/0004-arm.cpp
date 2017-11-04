@@ -201,7 +201,7 @@ int main(){
     ,&data[i].endCall.hour
     ,&data[i].endCall.min
     ,&data[i].endCall.sec);
-    cuspro[data[i].caller]=data[i].promo;
+    cuspro[data[i].caller].promo=data[i].promo;
 
     //second use each time
     //printf("%lf\n",toTimestamp(data[i].startCall));
@@ -306,21 +306,19 @@ int main(){
       }
     }
     sizeData=i;
-    cuspro[data[i].caller]=data[i].newpack;
+    cuspro[data[i].caller].newpack=data[i].newpack;
   }
 
   for(int i=0;i<sizeData;i++){
-    if(data[i].promo!=data[i].newpack){
+    if(cuspro[data[i].caller].promo!=cuspro[data[i].caller].newpack){
       ans[sizeAns++]=data[i].caller;
-    }
-    else{
-      
     }
   }
 
   sort(ans,ans+sizeAns);
   for(int i=0;i<sizeAns;i++){
-    printf("%010.0lf\n",ans[i]);
+    if(data[i].caller!=data[i+1].caller)
+      printf("%010.0lf\n",ans[i]);
   }
   //printf("%010.0lf",maxCallNum);
   return 0;
