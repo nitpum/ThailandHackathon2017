@@ -8,8 +8,8 @@ struct data {
     int id;
     int des;
     char date1[25];
-    char data2[25];
-}
+    char date2[25];
+};
 
 struct data phone[10000];
 
