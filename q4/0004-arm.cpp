@@ -103,6 +103,75 @@ void callAnyNetwork(int i,int pro,int minUse,int freeMin,double overCost){
   return;
 }
 
+double callInTime(struct timestamp startCall,struct timestamp endCall,int startFree,int endFree){
+  double startT,endT;
+  struct timestamp tmpTmS;
+  tmpTmS.year=startCall.year;
+  tmpTmS.month=startCall.month;
+  tmpTmS.date=startCall.date;
+  tmpTmS.hour=startFree;
+  tmpTmS.min=0;
+  tmpTmS.sec=0;
+
+  struct timestamp tmpTmE;
+  tmpTmE.year=startCall.year;
+  tmpTmE.month=startCall.month;
+  tmpTmE.date=startCall.date;
+  tmpTmE.hour=endFree;
+  tmpTmE.min=0;
+  tmpTmE.sec=0;
+
+  int checkA=0;
+  bool err=0;
+
+  if(toTimestamp(startCall)>toTimestamp(tmpTmE)) continue;
+  if(toTimestamp(startCall)>toTimestamp(tmpTmS)){
+    startT=toTimestamp(startCall);
+  }
+  else{
+    startT=toTimestamp(tmpTmS);
+  }
+  if(startCall.year==endCall.year){
+    if(startCall.month==endCall.month){
+      if(startCall.date==endCall.date){
+        checkA=1;
+        if(toTimestamp(endCall)<toTimestamp(tmpTmE)){
+          if(toTimestamp(endCall)>toTimestamp(tmpTmS)){
+            endT=toTimestamp(endCall);
+          }
+          else{
+            continue;
+          }
+        }
+        else{
+          endT=toTimestamp(tmpTmE);
+        }
+      }
+    }
+  }
+  if(checkA==0){
+    endT=toTimestamp(tmpTmE);
+  }
+
+  return endT-startT;
+}
+
+void callInNetworkTime(int i,int pro,struct timestamp startCall,struct timestamp endCall,int startFree,int endFree){
+  double minOver;
+  if(callData[data[i].caller][pro].inNetwork+minUse<=freeMin){
+    callData[data[i].caller][pro].inNetwork+=minUse;
+  }
+  else if(callData[data[i].caller][pro].inNetwork==freeMin){
+    callData[data[i].caller][pro].cost+=minUse*overCost;
+  }
+  else{
+    callData[data[i].caller][pro].inNetwork=freeMin;
+    minOver=callData[data[i].caller][pro].inNetwork+minUse-freeMin;
+    callData[data[i].caller][pro].cost+=minOver*overCost;
+  }
+  return;
+}
+
 int main(){
   char str[1000];
   for(int i=0;fgets(str,sizeof(str),stdin)!=NULL;i++){
@@ -147,7 +216,7 @@ int main(){
       callAnyNetwork(i,813,convertTime(data[i].secUse),600,1.5);
     }
     else if(oper(data[i].caller)==2){
-
+      //
     }
     else if(oper(data[i].caller)==3){
 
