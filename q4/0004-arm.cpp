@@ -43,8 +43,7 @@ int oper(double number){
   }
 }
 
-double convertTime(double time)
-{
+double convertTime(double time){
     int min=0;
     min=time/60;
     time-=min*60;
@@ -56,6 +55,7 @@ double convertTime(double time)
 double maxCallStat=0;
 double maxCallNum;
 map<double,map<int,struct paid> > callData;
+map<int,double> procost;
 
 void callInNetwork(int i,int pro,int minUse,int freeMin,double overCost){
   double minOver;
@@ -220,6 +220,24 @@ int main(){
 
       //cal package 813
       callAnyNetwork(i,813,convertTime(data[i].secUse),600,1.5);
+
+      procost[811]=299+callData[data[i].caller][811].cost;
+      procost[812]=499+callData[data[i].caller][812].cost;
+      procost[813]=699+callData[data[i].caller][813].cost;
+      data[i].paid=procost[data[i].promo];
+
+      if(procost[811]<data[i].paid){
+        data[i].paid=procost[811];
+        data[i].newpack=811;
+      }
+      if(procost[812]<data[i].paid){
+        data[i].paid=procost[812];
+        data[i].newpack=812;
+      }
+      if(procost[813]<data[i].paid){
+        data[i].paid=procost[813];
+        data[i].newpack=813;
+      }
     }
     else if(oper(data[i].caller)==2){
       //cal package 821
@@ -237,6 +255,19 @@ int main(){
       else{
         callOutNetwork(i,822,convertTime(data[i].secUse),0,1.5);
       }
+
+      procost[821]=299+callData[data[i].caller][821].cost;
+      procost[822]=299+callData[data[i].caller][822].cost;
+      data[i].paid=procost[data[i].promo];
+
+      if(procost[821]<data[i].paid){
+        data[i].paid=procost[821];
+        data[i].newpack=821;
+      }
+      if(procost[822]<data[i].paid){
+        data[i].paid=procost[822];
+        data[i].newpack=822;
+      }
     }
     else if(oper(data[i].caller)==3){
       //cal package 831
@@ -253,6 +284,19 @@ int main(){
       }
       else{
         callOutNetwork(i,832,data[i].secUse,0,0.03);
+      }
+
+      procost[831]=99+callData[data[i].caller][831].cost;
+      procost[832]=199+callData[data[i].caller][832].cost;
+      data[i].paid=procost[data[i].promo];
+
+      if(procost[831]<data[i].paid){
+        data[i].paid=procost[831];
+        data[i].newpack=831;
+      }
+      if(procost[832]<data[i].paid){
+        data[i].paid=procost[832];
+        data[i].newpack=832;
       }
     }
 
