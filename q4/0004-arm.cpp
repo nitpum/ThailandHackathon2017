@@ -56,6 +56,8 @@ double maxCallStat=0;
 double maxCallNum;
 map<double,map<int,struct paid> > callData;
 map<int,double> procost;
+map<double,struct customer> cuspro;
+map<double,bool> isAns;
 
 void callInNetwork(int i,int pro,int minUse,int freeMin,double overCost){
   double minOver;
@@ -199,6 +201,7 @@ int main(){
     ,&data[i].endCall.hour
     ,&data[i].endCall.min
     ,&data[i].endCall.sec);
+    cuspro[data[i].caller]=data[i].promo;
 
     //second use each time
     //printf("%lf\n",toTimestamp(data[i].startCall));
@@ -303,11 +306,15 @@ int main(){
       }
     }
     sizeData=i;
+    cuspro[data[i].caller]=data[i].newpack;
   }
 
   for(int i=0;i<sizeData;i++){
     if(data[i].promo!=data[i].newpack){
       ans[sizeAns++]=data[i].caller;
+    }
+    else{
+      
     }
   }
 
