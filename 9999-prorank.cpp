@@ -31,11 +31,26 @@ double maxCallNum;
 map<double,double> callStat;
 map<int,double> proCount;
 
+int oper(double number){
+  if(number >= 810000000 && number <= 819999999){
+    return 1;
+  }
+
+  if(number >= 820000000 && number <= 829999999){
+    return 2;
+  }
+
+  if(number >= 830000000 && number <= 839999999){
+    return 3;
+  }
+}
+
 void printProStat(int proId){
   printf("%d: %lf\n",proId,proCount[proId]);
 }
 
 int main(){
+  double avgSec=0,outNetworkCount=0;
   char str[1000];
   for(int i=0;fgets(str,sizeof(str),stdin)!=NULL;i++){
     //input data
@@ -60,7 +75,12 @@ int main(){
 
     proCount[data[i].promo]++;
 
-    //if(data[i].pro)
+    if(data[i].promo==831){
+      if(oper(data[i].caller)!=oper(data[i].ans)){
+        avgSec+=toTimestamp(data[i].endCall)-toTimestamp(data[i].startCall);
+        outNetworkCount++;
+      }
+    }
 
     //max
     /*callStat[data[i].caller]+=data[i].secUse;
@@ -78,6 +98,7 @@ int main(){
   printProStat(822);
   printProStat(831);
   printProStat(832);
+  printf("%lf\n",avgSec/outNetworkCount);
   //printf("%010.0lf",maxCallNum);
   return 0;
 }
