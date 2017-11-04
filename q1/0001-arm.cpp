@@ -1,4 +1,6 @@
-#include<bits/stdc++.h>
+#include<stdio.h>
+#include<time.h>
+#include<map>
 using namespace std;
 struct timestamp{
   int year,month,date,hour,min,sec;
@@ -27,9 +29,11 @@ double toTimestamp(struct timestamp a){
 double maxCallStat=0;
 double maxCallNum;
 map<double,double> callStat;
+
 int main(){
   char str[1000];
   for(int i=0;fgets(str,sizeof(str),stdin)!=NULL;i++){
+    //input data
     sscanf(str,"%lf,%d,%lf,%d-%d-%d %d:%d:%d,%d-%d-%d %d:%d:%d"
     ,&data[i].caller,&data[i].promo,&data[i].ans
     ,&data[i].startCall.year
@@ -45,8 +49,10 @@ int main(){
     ,&data[i].endCall.min
     ,&data[i].endCall.sec);
 
+    //second use each time
     data[i].secUse=toTimestamp(data[i].endCall)-toTimestamp(data[i].startCall);
 
+    //max
     callStat[data[i].caller]+=data[i].secUse;
     if(callStat[data[i].caller]>maxCallStat){
       maxCallStat=callStat[data[i].caller];
