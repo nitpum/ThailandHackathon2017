@@ -1,6 +1,4 @@
-#include<stdio.h>
-#include<time.h>
-#include<map>
+#include<bits/stdc++.h>
 using namespace std;
 struct timestamp{
   int year,month,date,hour,min,sec;
@@ -16,7 +14,7 @@ struct customer{
 struct customer data[1000000];
 
 double toTimestamp(struct timestamp a){
-   struct tm tm;
+  struct tm tm;
   tm.tm_year=a.year;
   tm.tm_mon=a.month;
   tm.tm_mday=a.date;
@@ -27,8 +25,8 @@ double toTimestamp(struct timestamp a){
 }
 
 double maxCallStat=0;
-double maxCallNum;
-map<double,double> callStat;
+double maxCallNum[2];
+map<double,map<double,double> > callStat;
 
 int main(){
   char str[1000];
@@ -50,17 +48,27 @@ int main(){
     ,&data[i].endCall.sec);
 
     //second use each time
-    //printf("%lf\n",toTimestamp(data[i].startCall));
     data[i].secUse=toTimestamp(data[i].endCall)-toTimestamp(data[i].startCall);
-
+    
     //max
-    callStat[data[i].caller]+=data[i].secUse;
-    if(callStat[data[i].caller]>maxCallStat){
-      maxCallStat=callStat[data[i].caller];
-      maxCallNum=data[i].caller;
+    callStat[min(data[i].caller,data[i].ans)][max(data[i].caller,data[i].ans)]+=data[i].secUse;
+    if(callStat[min(data[i].caller,data[i].ans)][max(data[i].caller,data[i].ans)]>maxCallStat){
+      maxCallStat=callStat[min(data[i].caller,data[i].ans)][max(data[i].caller,data[i].ans)];
+      maxCallNum[0]=min(data[i].caller,data[i].ans);
+      maxCallNum[1]=max(data[i].caller,data[i].ans);
     }
 
   }
-  printf("%010.0lf",maxCallNum);
+  printf("%010.0lf\n",maxCallNum[0]);
+  printf("%010.0lf\n",maxCallNum[1]);
+  int hour,min,sec;
+  hour=maxCallStat/(60*60);
+  maxCallStat=maxCallStat-(60*60*hour);
+
+  min=maxCallStat/60;
+  maxCallStat=maxCallStat-(60*min);
+
+  sec=maxCallStat;
+  printf("%02d:%02d:%02d",hour,min,sec);
   return 0;
 }
