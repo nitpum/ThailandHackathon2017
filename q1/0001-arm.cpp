@@ -16,7 +16,7 @@ struct customer{
 struct customer data[1000000];
 
 double toTimestamp(struct timestamp a){
-  struct tm tm;
+   struct tm tm;
   tm.tm_year=a.year;
   tm.tm_mon=a.month;
   tm.tm_mday=a.date;
@@ -58,6 +58,7 @@ int main(){
       maxCallStat=callStat[data[i].caller];
       maxCallNum=data[i].caller;
     }
+
   }
   printf("%010.0lf",maxCallNum);
   return 0;
