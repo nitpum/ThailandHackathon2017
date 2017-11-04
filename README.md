@@ -11,4 +11,4 @@
 `git commit -m "ใส่ข้อความอัพเดทภาษาอังกฤษ"`<br/>
 
 # อัพเดทข้อมูล
-`git push origin master`
+`git pull origin master && push origin master`
