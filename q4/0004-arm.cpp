@@ -307,7 +307,7 @@ int main(){
 
   for(int i=0;i<sizeData;i++){
     if(data[i].promo!=data[i].newpack){
-      ans[sizeAns]=data[i].caller;
+      ans[sizeAns++]=data[i].caller;
     }
   }
 
