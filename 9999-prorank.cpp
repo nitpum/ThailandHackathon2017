@@ -52,7 +52,7 @@ int oper(double number){
 void printProStat(int proId){
   printf("%d: %lf\n",proId,proCount[proId]);
   printf("  In: %lf\n",inNetCallTime[proId]/inNetCallCount[proId]);
-  printf("  Out: %lf\n\n",inNetCallTime[proId]/inNetCallCount[proId]);
+  printf("  Out: %lf\n\n",outNetCallTime[proId]/outNetCallCount[proId]);
 }
 
 int main(){
