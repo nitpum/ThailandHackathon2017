@@ -156,17 +156,11 @@ double callInTime(struct timestamp startCall,struct timestamp endCall,int startF
   return endT-startT;
 }
 
-void callInNetworkTime(int i,int pro,struct timestamp startCall,struct timestamp endCall,int startFree,int endFree){
+void callInNetworkTime(int i,int pro,struct timestamp startCall,struct timestamp endCall,int startFree,int endFree,double overCost){
+  double secCallInTime=callInTime(data[i].startCall,data[i].endCall,startFree,endFree);
   double minOver;
-  if(callData[data[i].caller][pro].inNetwork+minUse<=freeMin){
-    callData[data[i].caller][pro].inNetwork+=minUse;
-  }
-  else if(callData[data[i].caller][pro].inNetwork==freeMin){
-    callData[data[i].caller][pro].cost+=minUse*overCost;
-  }
-  else{
-    callData[data[i].caller][pro].inNetwork=freeMin;
-    minOver=callData[data[i].caller][pro].inNetwork+minUse-freeMin;
+  if(secCallInTime!=data[i].secUse){
+    minOver=convertTime(data[i].secUse-secCallInTime);
     callData[data[i].caller][pro].cost+=minOver*overCost;
   }
   return;
@@ -216,7 +210,14 @@ int main(){
       callAnyNetwork(i,813,convertTime(data[i].secUse),600,1.5);
     }
     else if(oper(data[i].caller)==2){
-      //
+      //cal package 821
+      if(oper(data[i].caller)==oper(data[i].ans)){
+        callInNetworkTime(i,821,data[i].startCall,data[i].endCall,5,17,1);
+      }
+      else{
+        callOutNetwork(i,821,convertTime(data[i].secUse),0,1.5);
+      }
+
     }
     else if(oper(data[i].caller)==3){
 
