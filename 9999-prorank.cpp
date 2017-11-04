@@ -60,6 +60,8 @@ int main(){
 
     proCount[data[i].promo]++;
 
+    //if(data[i].pro)
+
     //max
     /*callStat[data[i].caller]+=data[i].secUse;
     if(callStat[data[i].caller]>maxCallStat){
