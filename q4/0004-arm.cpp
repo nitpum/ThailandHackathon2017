@@ -11,8 +11,7 @@ struct customer{
   double secUse;
 };
 struct paid{
-  double inNetwork,outNetwork,anyNetwork;
-  double cost;
+  double inNetwork,outNetwork,anyNetwork,cost;
 }
 
 struct customer data[1000000];
@@ -68,6 +67,32 @@ int main(){
     //second use each time
     //printf("%lf\n",toTimestamp(data[i].startCall));
     data[i].secUse=toTimestamp(data[i].endCall)-toTimestamp(data[i].startCall);
+
+    if(oper(data[i].caller)==1){
+      if(data[i].promo==811){
+        if(oper(data[i].caller)==oper(data[i].ans)){
+          //
+        }
+        else{
+          //
+        }
+      }
+      else if(data[i].promo==812){
+        if(oper(data[i].caller)==oper(data[i].ans)){
+          //
+        }
+        else{
+          //
+        }
+      }
+
+    }
+    else if(oper(data[i].caller)==2){
+
+    }
+    else if(oper(data[i].caller)==3){
+
+    }
 
     //max
     callStat[data[i].caller]+=data[i].secUse;
