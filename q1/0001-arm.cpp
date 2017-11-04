@@ -8,15 +8,15 @@ struct customer{
   int promo;
   double ans;
   struct timestamp startCall,endCall;
-  int secUse;
+  double secUse;
 };
 
 struct customer data[1000000];
 struct tm tmS,tmE;
 
-int maxCallStat=0;
+double maxCallStat=0;
 double maxCallNum;
-map<double,int> callStat;
+map<double,double> callStat;
 int main(){
   char str[1000];
   for(int i=0;fgets(str,sizeof(str),stdin)!=NULL;i++){
