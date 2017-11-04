@@ -12,7 +12,7 @@ struct customer{
 };
 struct paid{
   double inNetwork,outNetwork,anyNetwork,cost;
-}
+};
 
 struct customer data[1000000];
 
@@ -28,22 +28,80 @@ double toTimestamp(struct timestamp a){
 }
 
 int oper(double number){
-  if(number >= 0810000000 && number <= 0819999999){
+  if(number >= 810000000 && number <= 819999999){
     return 1;
   }
 
-  if(number >= 0820000000 && number <= 0829999999){
+  if(number >= 820000000 && number <= 829999999){
     return 2;
   }
 
-  if(number >= 0830000000 && number <= 0839999999){
+  if(number >= 830000000 && number <= 839999999){
     return 3;
   }
 }
 
+double convertTime(double time)
+{
+    int min=0;
+    min=time/60;
+    time-=min*60;
+    if(time>0)
+        min++;
+    return (double)min;
+}
+
 double maxCallStat=0;
 double maxCallNum;
-map<double,map<int,struct piad> > callData;
+map<double,map<int,struct paid> > callData;
+
+void callInNetwork(int i,int pro,int minUse,int freeMin,double overCost){
+  double minOver;
+  if(callData[data[i].caller][pro].inNetwork+minUse<=freeMin){
+    callData[data[i].caller][pro].inNetwork+=minUse;
+  }
+  else if(callData[data[i].caller][pro].inNetwork==freeMin){
+    callData[data[i].caller][pro].cost+=minUse*overCost;
+  }
+  else{
+    callData[data[i].caller][pro].inNetwork=freeMin;
+    minOver=callData[data[i].caller][pro].inNetwork+minUse-freeMin;
+    callData[data[i].caller][pro].cost+=minOver*overCost;
+  }
+  return;
+}
+
+void callOutNetwork(int i,int pro,int minUse,int freeMin,double overCost){
+  double minOver;
+  if(callData[data[i].caller][pro].outNetwork+minUse<=freeMin){
+    callData[data[i].caller][pro].outNetwork+=minUse;
+  }
+  else if(callData[data[i].caller][pro].outNetwork==freeMin){
+    callData[data[i].caller][pro].cost+=minUse*overCost;
+  }
+  else{
+    callData[data[i].caller][pro].outNetwork=freeMin;
+    minOver=callData[data[i].caller][pro].outNetwork+minUse-freeMin;
+    callData[data[i].caller][pro].cost+=minOver*overCost;
+  }
+  return;
+}
+
+void callAnyNetwork(int i,int pro,int minUse,int freeMin,double overCost){
+  double minOver;
+  if(callData[data[i].caller][pro].anyNetwork+minUse<=freeMin){
+    callData[data[i].caller][pro].anyNetwork+=minUse;
+  }
+  else if(callData[data[i].caller][pro].anyNetwork==freeMin){
+    callData[data[i].caller][pro].cost+=minUse*overCost;
+  }
+  else{
+    callData[data[i].caller][pro].anyNetwork=freeMin;
+    minOver=callData[data[i].caller][pro].anyNetwork+minUse-freeMin;
+    callData[data[i].caller][pro].cost+=minOver*overCost;
+  }
+  return;
+}
 
 int main(){
   char str[1000];
@@ -69,19 +127,24 @@ int main(){
     data[i].secUse=toTimestamp(data[i].endCall)-toTimestamp(data[i].startCall);
 
     if(oper(data[i].caller)==1){
-      double minUse=data[i].secUse;
       //cal package 811
       if(oper(data[i].caller)==oper(data[i].ans)){
-        if(callData[data[i].caller][811].inNetwork+data[i].secUse<=200){
-          callData[data[i].caller][811].inNetwork+=data[i].secUse;
-        }
-        else{
-          callData[data[i].caller][811].inNetwork+data[i].secUse-200;
-        }
+        callInNetwork(i,811,convertTime(data[i].secUse),200,1);
       }
       else{
-        //
+        callOutNetwork(i,811,convertTime(data[i].secUse),100,1.5);
       }
+
+      //cal package 812
+      if(oper(data[i].caller)==oper(data[i].ans)){
+        callInNetwork(i,812,convertTime(data[i].secUse),400,1);
+      }
+      else{
+        callOutNetwork(i,812,convertTime(data[i].secUse),150,1.5);
+      }
+
+      //cal package 813
+      callAnyNetwork(i,813,convertTime(data[i].secUse),600,1.5);
     }
     else if(oper(data[i].caller)==2){
 
@@ -90,13 +153,7 @@ int main(){
 
     }
 
-    //max
-    callStat[data[i].caller]+=data[i].secUse;
-    if(callStat[data[i].caller]>maxCallStat){
-      maxCallStat=callStat[data[i].caller];
-      maxCallNum=data[i].caller;
-    }
   }
-  printf("%010.0lf",maxCallNum);
+  //printf("%010.0lf",maxCallNum);
   return 0;
 }
