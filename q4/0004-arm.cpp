@@ -9,6 +9,8 @@ struct customer{
   double ans;
   struct timestamp startCall,endCall;
   double secUse;
+  double paid;
+  int newpack;
 };
 struct paid{
   double inNetwork,outNetwork,anyNetwork,cost;
@@ -124,7 +126,7 @@ double callInTime(struct timestamp startCall,struct timestamp endCall,int startF
   int checkA=0;
   bool err=0;
 
-  if(toTimestamp(startCall)>toTimestamp(tmpTmE)) continue;
+  if(toTimestamp(startCall)>toTimestamp(tmpTmE)) return 0;
   if(toTimestamp(startCall)>toTimestamp(tmpTmS)){
     startT=toTimestamp(startCall);
   }
@@ -140,7 +142,7 @@ double callInTime(struct timestamp startCall,struct timestamp endCall,int startF
             endT=toTimestamp(endCall);
           }
           else{
-            continue;
+            return 0;
           }
         }
         else{
@@ -160,6 +162,16 @@ void callInNetworkTime(int i,int pro,struct timestamp startCall,struct timestamp
   double secCallInTime=callInTime(data[i].startCall,data[i].endCall,startFree,endFree);
   double minOver;
   if(secCallInTime!=data[i].secUse){
+    minOver=convertTime(data[i].secUse-secCallInTime);
+    callData[data[i].caller][pro].cost+=minOver*overCost;
+  }
+  return;
+}
+
+void callInNetworkTime2(int i,int pro,struct timestamp startCall,struct timestamp endCall,int startFree,int endFree,double overCost){
+  double secCallInTime=callInTime(data[i].startCall,data[i].endCall,startFree,endFree);
+  double minOver;
+  if(secCallInTime==data[i].secUse){
     minOver=convertTime(data[i].secUse-secCallInTime);
     callData[data[i].caller][pro].cost+=minOver*overCost;
   }
@@ -218,9 +230,30 @@ int main(){
         callOutNetwork(i,821,convertTime(data[i].secUse),0,1.5);
       }
 
+      //cal package 822
+      if(oper(data[i].caller)==oper(data[i].ans)){
+        callInNetworkTime2(i,822,data[i].startCall,data[i].endCall,8,22,1);
+      }
+      else{
+        callOutNetwork(i,822,convertTime(data[i].secUse),0,1.5);
+      }
     }
     else if(oper(data[i].caller)==3){
+      //cal package 831
+      if(oper(data[i].caller)==oper(data[i].ans)){
+        callInNetwork(i,831,convertTime(data[i].secUse),0,0.75);
+      }
+      else{
+        callOutNetwork(i,831,convertTime(data[i].secUse),0,1.5);
+      }
 
+      //cal package 832
+      if(oper(data[i].caller)==oper(data[i].ans)){
+        callInNetwork(i,832,data[i].secUse,0,0.015);
+      }
+      else{
+        callOutNetwork(i,832,data[i].secUse,0,0.03);
+      }
     }
 
   }
