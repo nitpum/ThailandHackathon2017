@@ -317,7 +317,7 @@ int main(){
 
   sort(ans,ans+sizeAns);
   for(int i=0;i<sizeAns;i++){
-    if(data[i].caller!=data[i+1].caller)
+    if(ans[i]!=ans[i+1])
       printf("%010.0lf\n",ans[i]);
   }
   //printf("%010.0lf",maxCallNum);
