@@ -30,6 +30,7 @@ double maxCallStat=0;
 double maxCallNum;
 map<double,double> callStat;
 map<int,double> proCount;
+map<int,double> proTime;
 map<int,double> inNetCallTime;
 map<int,double> outNetCallTime;
 map<int,double> inNetCallCount;
@@ -50,7 +51,8 @@ int oper(double number){
 }
 
 void printProStat(int proId){
-  printf("%d: %lf\n",proId,proCount[proId]);
+  printf("%d count: %lf\n",proId,proCount[proId]);
+  printf("  Time: %lf\n",proTime[proId]);
   printf("  In: %lf\n",inNetCallTime[proId]/inNetCallCount[proId]);
   printf("  Out: %lf\n\n",outNetCallTime[proId]/outNetCallCount[proId]);
 }
@@ -78,16 +80,17 @@ int main(){
 
     //second use each time
     //printf("%lf\n",toTimestamp(data[i].startCall));
-    //data[i].secUse=toTimestamp(data[i].endCall)-toTimestamp(data[i].startCall);
+    data[i].secUse=toTimestamp(data[i].endCall)-toTimestamp(data[i].startCall);
 
     proCount[data[i].promo]++;
+    proTime[data[i].promo]+=data[i].secUse;
 
     if(oper(data[i].caller)!=oper(data[i].ans)){
-      outNetCallTime[data[i].promo]+=toTimestamp(data[i].endCall)-toTimestamp(data[i].startCall);
+      outNetCallTime[data[i].promo]+=data[i].secUse;
       outNetCallCount[data[i].promo]++;
     }
     else{
-      inNetCallTime[data[i].promo]+=toTimestamp(data[i].endCall)-toTimestamp(data[i].startCall);
+      inNetCallTime[data[i].promo]+=data[i].secUse;
       inNetCallCount[data[i].promo]++;
     }
 
