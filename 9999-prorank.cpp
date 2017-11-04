@@ -30,6 +30,10 @@ double maxCallStat=0;
 double maxCallNum;
 map<double,double> callStat;
 map<int,double> proCount;
+map<int,double> inNetCallTime;
+map<int,double> outNetCallTime;
+map<int,double> inNetCallCount;
+map<int,double> outNetCallCount;
 
 int oper(double number){
   if(number >= 810000000 && number <= 819999999){
@@ -47,6 +51,8 @@ int oper(double number){
 
 void printProStat(int proId){
   printf("%d: %lf\n",proId,proCount[proId]);
+  printf("  In: %lf\n",inNetCallTime[proId]/inNetCallCount[proId]);
+  printf("  Out: %lf\n\n",inNetCallTime[proId]/inNetCallCount[proId]);
 }
 
 int main(){
@@ -76,15 +82,13 @@ int main(){
 
     proCount[data[i].promo]++;
 
-    if(data[i].promo==831){
-      if(oper(data[i].caller)!=oper(data[i].ans)){
-        avgSec+=toTimestamp(data[i].endCall)-toTimestamp(data[i].startCall);
-        outNetworkCount++;
-      }
-      else{
-        avgSecIn+=toTimestamp(data[i].endCall)-toTimestamp(data[i].startCall);
-        inNetworkCount++;
-      }
+    if(oper(data[i].caller)!=oper(data[i].ans)){
+      outNetCallTime[data[i].promo]+=toTimestamp(data[i].endCall)-toTimestamp(data[i].startCall);
+      inNetCallCount[data[i].promo]++;
+    }
+    else{
+      inNetCallTime[data[i].promo]+=toTimestamp(data[i].endCall)-toTimestamp(data[i].startCall);
+      inNetCallCount[data[i].promo]++;
     }
 
     //max
@@ -103,8 +107,6 @@ int main(){
   printProStat(822);
   printProStat(831);
   printProStat(832);
-  printf("Out: %lf\n",avgSec/outNetworkCount);
-  printf("In: %lf\n",avgSecIn/inNetworkCount);
   //printf("%010.0lf",maxCallNum);
   return 0;
 }
