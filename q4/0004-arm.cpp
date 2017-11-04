@@ -178,8 +178,11 @@ void callInNetworkTime2(int i,int pro,struct timestamp startCall,struct timestam
   return;
 }
 
+double ans[100000];
+
 int main(){
   char str[1000];
+  int sizeData,sizeAns=0;
   for(int i=0;fgets(str,sizeof(str),stdin)!=NULL;i++){
     //input data
     sscanf(str,"%lf,%d,%lf,%d-%d-%d %d:%d:%d,%d-%d-%d %d:%d:%d"
@@ -299,7 +302,18 @@ int main(){
         data[i].newpack=832;
       }
     }
+    sizeData=i;
+  }
 
+  for(int i=0;i<sizeData;i++){
+    if(data[i].promo!=data[i].newpack){
+      ans[sizeAns]=data[i].caller;
+    }
+  }
+
+  sort(ans,ans+sizeAns);
+  for(int i=0;i<sizeAns;i++){
+    printf("%010.0lf\n",ans[i]);
   }
   //printf("%010.0lf",maxCallNum);
   return 0;
