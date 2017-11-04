@@ -34,36 +34,7 @@ int main(){
     ,&data[i].endCall.hour
     ,&data[i].endCall.min
     ,&data[i].endCall.sec);
-    /*printf("%010.0lf,%d,%010.0lf,%04d-%02d-%02d %02d:%02d:%02d,%02d-%02d-%02d %02d:%02d:%02d\n"
-    ,data[i].caller,data[i].promo,data[i].ans
-    ,data[i].startCall.year
-    ,data[i].startCall.month
-    ,data[i].startCall.date
-    ,data[i].startCall.hour
-    ,data[i].startCall.min
-    ,data[i].startCall.sec
-    ,data[i].endCall.year
-    ,data[i].endCall.month
-    ,data[i].endCall.date
-    ,data[i].endCall.hour
-    ,data[i].endCall.min
-    ,data[i].endCall.sec);*/
-    /*if(data[i].endCall.date!=data[i].startCall.date){
-      printf("[%d] %010.0lf,%d,%010.0lf,%04d-%02d-%02d %02d:%02d:%02d,%02d-%02d-%02d %02d:%02d:%02d\n"
-      ,i+1,data[i].caller,data[i].promo,data[i].ans
-      ,data[i].startCall.year
-      ,data[i].startCall.month
-      ,data[i].startCall.date
-      ,data[i].startCall.hour
-      ,data[i].startCall.min
-      ,data[i].startCall.sec
-      ,data[i].endCall.year
-      ,data[i].endCall.month
-      ,data[i].endCall.date
-      ,data[i].endCall.hour
-      ,data[i].endCall.min
-      ,data[i].endCall.sec);
-    }*/
+    
     tmS.tm_year=data[i].startCall.year;
   	tmS.tm_mon=data[i].startCall.month;
   	tmS.tm_mday=data[i].startCall.date;
