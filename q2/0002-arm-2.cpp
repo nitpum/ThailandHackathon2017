@@ -66,12 +66,31 @@ int main(){
     tmpTmE.hour=22;
     tmpTmE.min=0;
     tmpTmE.sec=0;
+    int checkA=0;
+
     if(toTimestamp(data[i].startCall)>toTimestamp(tmpTmS)){
+      startT=toTimestamp(data[i].startCall);
+    }
+    else{
       startT=toTimestamp(tmpTmS);
     }
-    if(toTimestamp(data[i].endCall)<toTimestamp(tmpTmE)){
+    if(data[i].startCall.year==data[i].endCall.year){
+      if(data[i].startCall.month==data[i].endCall.month){
+        if(data[i].startCall.date==data[i].endCall.date){
+          checkA=1;
+          if(toTimestamp(data[i].endCall)<toTimestamp(tmpTmE)){
+            endT=toTimestamp(data[i].endCall);
+          }
+          else{
+            endT=toTimestamp(tmpTmE);
+          }
+        }
+      }
+    }
+    if(checkA==0){
       endT=toTimestamp(tmpTmE);
     }
+
 
     data[i].secUse+=endT-startT;
     //max
