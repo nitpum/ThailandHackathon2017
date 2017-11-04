@@ -11,6 +11,7 @@ struct customer{
 };
 
 struct customer data[1000000];
+struct tm tm;
 
 int maxCallCount=0;
 double maxCallNum;
