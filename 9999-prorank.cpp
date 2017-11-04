@@ -51,6 +51,7 @@ void printProStat(int proId){
 
 int main(){
   double avgSec=0,outNetworkCount=0;
+  double avgSecIn=0,inNetworkCount=0;
   char str[1000];
   for(int i=0;fgets(str,sizeof(str),stdin)!=NULL;i++){
     //input data
@@ -80,6 +81,10 @@ int main(){
         avgSec+=toTimestamp(data[i].endCall)-toTimestamp(data[i].startCall);
         outNetworkCount++;
       }
+      else{
+        avgSecIn+=toTimestamp(data[i].endCall)-toTimestamp(data[i].startCall);
+        inNetworkCount++;
+      }
     }
 
     //max
@@ -98,7 +103,8 @@ int main(){
   printProStat(822);
   printProStat(831);
   printProStat(832);
-  printf("%lf\n",avgSec/outNetworkCount);
+  printf("Out: %lf\n",avgSec/outNetworkCount);
+  printf("In: %lf\n",avgSecIn/inNetworkCount);
   //printf("%010.0lf",maxCallNum);
   return 0;
 }
