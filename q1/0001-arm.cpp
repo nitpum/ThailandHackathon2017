@@ -12,7 +12,17 @@ struct customer{
 };
 
 struct customer data[1000000];
-struct tm tmS,tmE;
+
+double toTimestamp(struct timestamp a){
+  struct tm tm;
+  tm.tm_year=a.year;
+  tm.tm_mon=a.month;
+  tm.tm_mday=a.date;
+  tm.tm_hour=a.hour;
+  tm.tm_min=a.min;
+  tm.tm_sec=a.sec;
+  return mktime(&tm);
+}
 
 double maxCallStat=0;
 double maxCallNum;
@@ -34,21 +44,8 @@ int main(){
     ,&data[i].endCall.hour
     ,&data[i].endCall.min
     ,&data[i].endCall.sec);
-    
-    tmS.tm_year=data[i].startCall.year;
-  	tmS.tm_mon=data[i].startCall.month;
-  	tmS.tm_mday=data[i].startCall.date;
-  	tmS.tm_hour=data[i].startCall.hour;
-  	tmS.tm_min=data[i].startCall.min;
-  	tmS.tm_sec=data[i].startCall.sec;
 
-    tmE.tm_year=data[i].endCall.year;
-  	tmE.tm_mon=data[i].endCall.month;
-  	tmE.tm_mday=data[i].endCall.date;
-  	tmE.tm_hour=data[i].endCall.hour;
-  	tmE.tm_min=data[i].endCall.min;
-  	tmE.tm_sec=data[i].endCall.sec;
-    data[i].secUse=mktime(&tmE)-mktime(&tmS);
+    data[i].secUse=toTimestamp(data[i].endCall)-toTimestamp(data[i].startCall);
 
     callStat[data[i].caller]+=data[i].secUse;
     if(callStat[data[i].caller]>maxCallStat){
