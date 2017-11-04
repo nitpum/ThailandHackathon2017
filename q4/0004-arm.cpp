@@ -178,7 +178,7 @@ void callInNetworkTime2(int i,int pro,struct timestamp startCall,struct timestam
   return;
 }
 
-double ans[100000];
+double ans[1000000];
 
 int main(){
   char str[1000];
