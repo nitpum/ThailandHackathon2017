@@ -84,7 +84,7 @@ int main(){
 
     if(oper(data[i].caller)!=oper(data[i].ans)){
       outNetCallTime[data[i].promo]+=toTimestamp(data[i].endCall)-toTimestamp(data[i].startCall);
-      inNetCallCount[data[i].promo]++;
+      outNetCallCount[data[i].promo]++;
     }
     else{
       inNetCallTime[data[i].promo]+=toTimestamp(data[i].endCall)-toTimestamp(data[i].startCall);
