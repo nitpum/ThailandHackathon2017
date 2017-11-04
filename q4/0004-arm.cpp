@@ -56,6 +56,8 @@ double maxCallStat=0;
 double maxCallNum;
 map<double,map<int,struct paid> > callData;
 map<int,double> procost;
+map<double,struct customer> cuspro;
+map<double,bool> isAns;
 
 void callInNetwork(int i,int pro,int minUse,int freeMin,double overCost){
   double minOver;
@@ -178,7 +180,7 @@ void callInNetworkTime2(int i,int pro,struct timestamp startCall,struct timestam
   return;
 }
 
-double ans[100000];
+double ans[1000000];
 
 int main(){
   char str[1000];
@@ -199,6 +201,7 @@ int main(){
     ,&data[i].endCall.hour
     ,&data[i].endCall.min
     ,&data[i].endCall.sec);
+    cuspro[data[i].caller].promo=data[i].promo;
 
     //second use each time
     //printf("%lf\n",toTimestamp(data[i].startCall));
@@ -303,17 +306,19 @@ int main(){
       }
     }
     sizeData=i;
+    cuspro[data[i].caller].newpack=data[i].newpack;
   }
 
   for(int i=0;i<sizeData;i++){
-    if(data[i].promo!=data[i].newpack){
-      ans[sizeAns]=data[i].caller;
+    if(cuspro[data[i].caller].promo!=cuspro[data[i].caller].newpack){
+      ans[sizeAns++]=data[i].caller;
     }
   }
 
   sort(ans,ans+sizeAns);
   for(int i=0;i<sizeAns;i++){
-    printf("%010.0lf\n",ans[i]);
+    if(ans[i]!=ans[i+1])
+      printf("%010.0lf\n",ans[i]);
   }
   //printf("%010.0lf",maxCallNum);
   return 0;
