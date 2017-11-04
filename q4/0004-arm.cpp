@@ -43,7 +43,7 @@ int oper(double number){
 
 double maxCallStat=0;
 double maxCallNum;
-map<double,double> callStat;
+map<double,map<int,struct piad> > callData;
 
 int main(){
   char str[1000];
@@ -69,23 +69,19 @@ int main(){
     data[i].secUse=toTimestamp(data[i].endCall)-toTimestamp(data[i].startCall);
 
     if(oper(data[i].caller)==1){
-      if(data[i].promo==811){
-        if(oper(data[i].caller)==oper(data[i].ans)){
-          //
+      double minUse=data[i].secUse;
+      //cal package 811
+      if(oper(data[i].caller)==oper(data[i].ans)){
+        if(callData[data[i].caller][811].inNetwork+data[i].secUse<=200){
+          callData[data[i].caller][811].inNetwork+=data[i].secUse;
         }
         else{
-          //
+          callData[data[i].caller][811].inNetwork+data[i].secUse-200;
         }
       }
-      else if(data[i].promo==812){
-        if(oper(data[i].caller)==oper(data[i].ans)){
-          //
-        }
-        else{
-          //
-        }
+      else{
+        //
       }
-
     }
     else if(oper(data[i].caller)==2){
 
