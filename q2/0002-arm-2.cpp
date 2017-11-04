@@ -66,8 +66,11 @@ int main(){
     tmpTmE.hour=22;
     tmpTmE.min=0;
     tmpTmE.sec=0;
-    int checkA=0;
 
+    int checkA=0;
+    bool err=0;
+
+    if(toTimestamp(data[i].startCall)>toTimestamp(tmpTmE)) continue;
     if(toTimestamp(data[i].startCall)>toTimestamp(tmpTmS)){
       startT=toTimestamp(data[i].startCall);
     }
@@ -79,7 +82,12 @@ int main(){
         if(data[i].startCall.date==data[i].endCall.date){
           checkA=1;
           if(toTimestamp(data[i].endCall)<toTimestamp(tmpTmE)){
-            endT=toTimestamp(data[i].endCall);
+            if(toTimestamp(data[i].endCall)>toTimestamp(tmpTmS)){
+              endT=toTimestamp(data[i].endCall);
+            }
+            else{
+              continue;
+            }
           }
           else{
             endT=toTimestamp(tmpTmE);
@@ -92,7 +100,7 @@ int main(){
     }
 
 
-    data[i].secUse+=endT-startT;
+    data[i].secUse=endT-startT;
     //max
     callStat[data[i].caller]+=data[i].secUse;
     if(callStat[data[i].caller]>maxCallStat){
